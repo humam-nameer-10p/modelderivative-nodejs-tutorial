@@ -7,9 +7,9 @@ var logs = console.log;
 var ForgeSDK = require('forge-apis');
 
 // TODO - Check the file forge-auth.sh to set these ENV variables.
-var CLIENT_ID     = "bUA1koQ2jXcz66qKOWGCzEAOKWPOyDb2",
-	CLIENT_SECRET = "M510e35bf95184af",
-	BUCKET_KEY    = "grit_hackathon" + CLIENT_ID.toLowerCase(),
+var CLIENT_ID     = "",
+	CLIENT_SECRET = "",
+	BUCKET_KEY    = "" + CLIENT_ID.toLowerCase(),
 	FILE_NAME     = "UrbanHouse-2015.rvt",
 	FILE_PATH     = "./models/UrbanHouse-2015.rvt";
 
