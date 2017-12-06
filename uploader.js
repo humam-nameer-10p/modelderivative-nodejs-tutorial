@@ -7,11 +7,11 @@ var logs = console.log;
 var ForgeSDK = require('forge-apis');
 
 // TODO - Check the file forge-auth.sh to set these ENV variables.
-var CLIENT_ID     = process.env.FORGE_CLIENT_ID,
-	CLIENT_SECRET = process.env.FORGE_CLIENT_SECRET,
-	BUCKET_KEY    = process.env.FORGE_BUCKET_NAME + CLIENT_ID.toLowerCase(),
-	FILE_NAME     = process.env.FORGE_FILE_NAME,
-	FILE_PATH     = process.env.FORGE_FILE_PATH;
+var CLIENT_ID     = "bUA1koQ2jXcz66qKOWGCzEAOKWPOyDb2",
+	CLIENT_SECRET = "M510e35bf95184af",
+	BUCKET_KEY    = "grit_hackathon" + CLIENT_ID.toLowerCase(),
+	FILE_NAME     = "UrbanHouse-2015.rvt",
+	FILE_PATH     = "./models/UrbanHouse-2015.rvt";
 
 var bucketsApi     = new ForgeSDK.BucketsApi(), // Buckets Client
 	objectsApi     = new ForgeSDK.ObjectsApi(), // Objects Client
@@ -111,7 +111,6 @@ var createBucketIfNotExist = function (bucketKey) {
  * @param filePath
  * @param fileName
  */
-
 
 var uploadFileCheck = function(bucketKey, filePath, fileName) {
      return new Promise(function (resolve, reject) {
@@ -304,29 +303,31 @@ var manifestFile = function (encodedURN) {
  * Translate File
  * Check Manifest Status of Translation of File
  */
-oAuth2TwoLegged.authenticate().then(function(credentials){
+ module.exports = {
+	 distUpload : function() {
+	 oAuth2TwoLegged.authenticate().then((credentials) => {
 
-	createBucketIfNotExist(BUCKET_KEY).then(
+		createBucketIfNotExist(BUCKET_KEY).then(
 
-		function(createBucketRes){
+		(createBucketRes)=>{
 		
-			getBuckets().then(function(getBucketsRes){
+			getBuckets().then((getBucketsRes)=>{
 				logs(chalk.bold.green("**** Get all buckets response:"));
 				var bucketsArray = getBucketsRes.body.items;
-				bucketsArray.map(function(currentBucket){
+				bucketsArray.map((currentBucket)=>{
 					logs(chalk.bold.yellow(currentBucket.bucketKey));
 				})
 			},function(err){
 				console.error(err);
 			});
 
-            uploadFileCheck(BUCKET_KEY, FILE_PATH, FILE_NAME).then(function(uploadRes){
+            uploadFileCheck(BUCKET_KEY, FILE_PATH, FILE_NAME).then((uploadRes) =>{
 				const urnEncode = new Buffer(uploadRes.body.objectId).toString('base64');
 				
-				translateFile(urnEncode).then(function(translateRes){
+				translateFile(urnEncode).then((translateRes) =>{
 					logs(chalk.bold.green("**** Translating file:") + chalk.bold.blue(urnEncode));
 					
-					manifestFile(urnEncode).then(function(){
+					manifestFile(urnEncode).then(() =>{
 						logs(chalk.bold.green("**** Your File is ready for viewing"));								
 					}, defaultHandleError)	
 
@@ -337,3 +338,5 @@ oAuth2TwoLegged.authenticate().then(function(credentials){
 		}, defaultHandleError);
 
 }, defaultHandleError);
+}
+ }
